@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html ng-app="addressApp">
+<head>
+  <title>Address Book</title>
+  
+      <!--jQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+        <!-- Controllers -->
+    <script src="scripts/mainController.js"></script>
+
+    <!--Bootstrap JS-->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <!--Styles-->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/styles.css">
+</head>
+<body ng-controller="mainController">
+<!-- View / Edit /Delete Contact -->
+<section class="container">
+  <h3>My Contacts</h3>
+  <div class="row">
+      <form>
+      <table class="table table-striped">
+        <tr>
+          <th> First Name </th>
+          <th> Last Name </th>
+          <th> Street Address </th>
+          <th> Phone Number </th>
+          <th> E-mail Address </th>
+          <th> Edit </th>
+          <th> Delete </th>
+        </tr>
+        <tr ng-repeat="data in contact.dataSet">
+          <td> {{data.firstName}} <input type="text" ng-model="contact.dataSet[$index].firstName" ng-hide="!contact.dataSet[$index].editFlag" ng-required=" {{contact.fields[0].isRequired}} "> </td>
+          <td> {{data.lastName}} <input type="text" ng-model="contact.dataSet[$index].lastName" ng-hide="!contact.dataSet[$index].editFlag" ng-required=" {{contact.fields[2].isRequired}} "> </td>
+          <td> {{data.streetAddress}} <input type="text" ng-model="contact.dataSet[$index].streetAddress" ng-hide="!contact.dataSet[$index].editFlag"> </td>
+          <td> {{data.phoneNumber}} <input type="text" ng-model="contact.dataSet[$index].phoneNumber" ng-hide="!contact.dataSet[$index].editFlag"> </td>
+          <td> {{data.eMail}} <input type="text" ng-model="contact.dataSet[$index].eMail" ng-hide="!contact.dataSet[$index].editFlag"> </td>
+          <td> <button class="btn btn-primary" ng-click='editContact($index)' ng-hide="contact.dataSet[$index].editFlag" > <i class="fa fa-pencil"></i> </button> <button class="btn btn-primary"
+              ng-click='editContact($index)' ng-hide="!contact.dataSet[$index].editFlag" ng-required=" {{contact.fields[0].isRequired}}"> <i class="fa fa-check"></i>
+            </button></td>
+          <td> <button class="btn btn-danger" ng-click="contact.dataSet.splice($index, 1)"> <i class="fa fa-minus-circle"></i> </button> </td>
+        </tr>
+      </table>
+    </form>
+  </div>  
+</section>
+ <!-- Create Contacts --> 
+ <section class="container">
+  <div class="row">
+    <form name="createContact">
+      <h3> Create New Contact </h3>
+      <table class="table table-striped">
+        <tr ng-repeat="data in contact.fields">
+          <td>
+            <label for="{{data.id}}">{{data.label}}</label>
+          </td>
+          <td>
+            <input type="text" id="{{data.id}}" ng-model="contactFields[data.id]" ng-required="{{data.isRequired}}">
+          </td>
+        </tr>
+      </table>
+      <button class="btn btn-primary" ng-disabled="createContact.$pristine || createContact.$invalid" ng-click="addContact()"> Save </button>
+    </form>
+  </div>  
+</section> 
+
+</body>
+</html>
